@@ -27,7 +27,9 @@ import com.anderson.nutritionapp.presentation.onboarding.components.PageIndicato
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(
+    event: (OnBoardingEvent) -> Unit = {},
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
@@ -79,8 +81,8 @@ fun OnBoardingScreen() {
 
                 NutritionButton(text = buttonState.value[1], onClick = {
                     scope.launch {
-                        if (pagerState.currentPage == 3) {
-                            //TODO: NAVIGATE TO MAIN
+                        if (pagerState.currentPage == 2) {
+                            event(OnBoardingEvent.SaveAppEntry)
 
                         } else {
                             pagerState.animateScrollToPage(
