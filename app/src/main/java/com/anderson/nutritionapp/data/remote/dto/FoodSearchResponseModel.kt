@@ -1,5 +1,8 @@
 package com.anderson.nutritionapp.data.remote.dto
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 
 data class FoodSearchResponseModel(
     val foods_search: FoodsSearch
@@ -15,9 +18,9 @@ data class FoodsSearch(
 data class FoodResults(
     val food: List<Food>
 )
-
+@Entity()
 data class Food(
-    val food_id: String,
+   @PrimaryKey val food_id: String,
     val food_name: String,
     val food_type: String,
     val food_sub_categories: FoodSubCategories?,

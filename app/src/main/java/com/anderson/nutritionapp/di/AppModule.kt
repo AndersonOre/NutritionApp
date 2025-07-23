@@ -1,6 +1,10 @@
 package com.anderson.nutritionapp.di
 
 import android.app.Application
+import androidx.room.Room
+import com.anderson.nutritionapp.data.local.FoodDao
+import com.anderson.nutritionapp.data.local.FoodTypeConverters
+import com.anderson.nutritionapp.data.local.NutritionDatabase
 import com.anderson.nutritionapp.data.manager.LocalUserManagerImpl
 import com.anderson.nutritionapp.data.remote.NutritionApi
 import com.anderson.nutritionapp.data.repository.NutritionRepositoryImpl
@@ -71,4 +75,23 @@ object AppModule {
             getFoodById = GetFoodById(nutritionRepository)
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideNutritionDatabase(
+        application: Application
+    ): NutritionDatabase{
+        return Room.databaseBuilder(
+            context = application,
+            klass = NutritionDatabase::class.java,
+            name = "nutrition_database"
+        ).addTypeConverter(FoodTypeConverters()).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNutritionDao(
+        nutritionDatabase: NutritionDatabase
+    ): FoodDao = nutritionDatabase.foodDao
+
 }

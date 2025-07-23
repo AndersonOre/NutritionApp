@@ -14,9 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
+import com.anderson.nutritionapp.data.local.FoodDao
+import com.anderson.nutritionapp.data.remote.dto.Food
 import com.anderson.nutritionapp.presentation.navgraph.NavGraph
 import com.anderson.nutritionapp.ui.theme.NutritionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -24,9 +29,27 @@ class MainActivity : ComponentActivity() {
 
     val viewModel by viewModels<MainViewModel>()
 
+    @Inject
+    lateinit var dao: FoodDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            dao.upsert(
+                Food(
+                    food_id = "1",
+                    food_name = "Apple",
+                    food_images = null,
+                    food_type = "Generic",
+                    food_sub_categories = null,
+                    food_url = "null",
+                    food_attributes = null,
+                    servings = null
+                )
+            )
+        }
+
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 viewModel.splashCondition
