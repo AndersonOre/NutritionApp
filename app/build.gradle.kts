@@ -72,6 +72,8 @@ dependencies {
 
 // Retrofit
     implementation(libs.retrofit)
+    //GSON
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
@@ -85,8 +87,18 @@ dependencies {
 
 // Compose Foundation
     implementation(libs.androidx.foundation)
+    implementation("androidx.compose.material:material-icons-extended")
+
+
 
 // Accompanist
     implementation(libs.accompanist.systemuicontroller)
+
+
+    //OAUTH1.0
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    implementation("com.github.scribejava:scribejava-apis:8.3.3")
+    implementation("com.github.scribejava:scribejava-core:8.3.3")
 
 }

@@ -1,4 +1,4 @@
-package com.anderson.nutritionapp.domain.usecase
+package com.anderson.nutritionapp.domain.usecase.app_entry
 
 import com.anderson.nutritionapp.domain.manager.LocalUserManager
 import kotlinx.coroutines.flow.Flow
