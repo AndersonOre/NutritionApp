@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.anderson.nutritionapp.presentation.food_details.FoodDetailsScreen
+import com.anderson.nutritionapp.presentation.food_search.FoodSearchScreen
 import com.anderson.nutritionapp.presentation.home.HomeScreen
 import com.anderson.nutritionapp.presentation.home.HomeViewModel
 import com.anderson.nutritionapp.presentation.onboarding.OnBoardingScreen
@@ -41,11 +43,33 @@ fun NavGraph(
 
                 HomeScreen(
                     categories = categories.value,
-                    onCategoryClick = { /* handle click */ },
+                    onCategoryClick = { category ->
+                        navController.navigate("${Route.FoodSearchScreen}/${category.name}")
+                    },
 
-                )
+                    )
 
             }
+            composable(route = "${Route.FoodSearchScreen}/{categoryName}") { backStackEntry ->
+                val viewModel: HomeViewModel = hiltViewModel()
+                val categoryName = backStackEntry.arguments?.getString("categoryName") ?: ""
+                androidx.compose.runtime.LaunchedEffect(categoryName) {
+                    viewModel.searchFoods(categoryName)
+                }
+                val foodSearchResults = viewModel.foodSearchResults.collectAsState().value
+                FoodSearchScreen(
+                    categoryName = categoryName,
+                    foodSearchResults = foodSearchResults,
+                    onFoodClick = { foodId ->
+                        navController.navigate("${Route.FoodDetailsScreen}/$foodId")
+                    })
+            }
+
+            composable(route = "${Route.FoodDetailsScreen}/{foodId}") { backStackEntry ->
+                val foodId = backStackEntry.arguments?.getString("foodId") ?: ""
+                FoodDetailsScreen(foodId = foodId)
+            }
+
         }
     }
 }

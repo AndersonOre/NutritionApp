@@ -9,8 +9,10 @@ import com.anderson.nutritionapp.domain.repository.NutritionRepository
 import com.anderson.nutritionapp.domain.usecase.app_entry.AppEntryUseCases
 import com.anderson.nutritionapp.domain.usecase.app_entry.ReadAppEntry
 import com.anderson.nutritionapp.domain.usecase.app_entry.SaveAppEntry
+import com.anderson.nutritionapp.domain.usecase.nutrition.GetFoodById
 import com.anderson.nutritionapp.domain.usecase.nutrition.GetFoodCategories
 import com.anderson.nutritionapp.domain.usecase.nutrition.NutritionUseCases
+import com.anderson.nutritionapp.domain.usecase.nutrition.SearchFoods
 import com.anderson.nutritionapp.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -64,7 +66,9 @@ object AppModule {
         nutritionRepository: NutritionRepository
     ): NutritionUseCases {
         return NutritionUseCases(
-            getFoodCategories = GetFoodCategories(nutritionRepository)
+            getFoodCategories = GetFoodCategories(nutritionRepository),
+            searchFoods = SearchFoods(nutritionRepository),
+            getFoodById = GetFoodById(nutritionRepository)
         )
     }
 }
