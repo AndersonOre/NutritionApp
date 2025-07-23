@@ -2,6 +2,7 @@ package com.anderson.nutritionapp.domain.repository
 
 import com.anderson.nutritionapp.data.remote.dto.FoodByIdResponseModel
 import com.anderson.nutritionapp.data.remote.dto.FoodSearchResponseModel
+import com.anderson.nutritionapp.data.remote.dto.RecipeSearchResponseModel
 import com.anderson.nutritionapp.domain.model.FoodCategoryModel
 import kotlinx.coroutines.flow.Flow
 
@@ -16,5 +17,9 @@ interface NutritionRepository {
     ): Flow<FoodSearchResponseModel>
 
     suspend fun getFoodById(foodId: String): FoodByIdResponseModel?
+
+    fun getRecipeTypes(): Flow<List<String>>
+
+    fun searchRecipes(recipeType: String, maxResults: Int = 30): Flow<RecipeSearchResponseModel>
 
 }

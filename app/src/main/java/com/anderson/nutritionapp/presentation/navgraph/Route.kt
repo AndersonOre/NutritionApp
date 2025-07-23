@@ -8,6 +8,7 @@ sealed class Route(
     object HomeScreen : Route(route = "home_screen")
     object SearchScreen : Route(route = "search_screen")
     object FoodDetailsScreen : Route(route = "food_details_screen")
+    object FoodFavoritesScreen : Route(route = "food_favorites_screen")
     //...
     object AppStartNavigation : Route(route = "app_start_navigation")
     object NutritionNavigation : Route(route = "nutrition_navigation")

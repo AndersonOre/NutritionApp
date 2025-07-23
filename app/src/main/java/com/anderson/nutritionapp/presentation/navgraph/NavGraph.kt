@@ -13,6 +13,8 @@ import com.anderson.nutritionapp.presentation.home.HomeScreen
 import com.anderson.nutritionapp.presentation.home.HomeViewModel
 import com.anderson.nutritionapp.presentation.onboarding.OnBoardingScreen
 import com.anderson.nutritionapp.presentation.onboarding.OnBoardingViewModel
+import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchScreen
+import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchViewModel
 
 @Composable
 fun NavGraph(
@@ -40,14 +42,18 @@ fun NavGraph(
 
                 val viewModel: HomeViewModel = hiltViewModel()
                 val categories = viewModel.food_categories.collectAsState(initial = emptyList())
+                val recipeTypes = viewModel.recipeTypes.collectAsState(initial = emptyList())
 
                 HomeScreen(
                     categories = categories.value,
+                    recipes = recipeTypes.value,
                     onCategoryClick = { category ->
                         navController.navigate("${Route.FoodSearchScreen}/${category.name}")
                     },
-
-                    )
+                    onRecipeClick = { recipeType ->
+                        navController.navigate("RecipeTypeScreen/$recipeType")
+                    }
+                )
 
             }
             composable(route = "${Route.FoodSearchScreen}/{categoryName}") { backStackEntry ->
@@ -68,6 +74,20 @@ fun NavGraph(
             composable(route = "${Route.FoodDetailsScreen}/{foodId}") { backStackEntry ->
                 val foodId = backStackEntry.arguments?.getString("foodId") ?: ""
                 FoodDetailsScreen(foodId = foodId)
+            }
+
+            composable(route = "RecipeTypeScreen/{recipeType}") { backStackEntry ->
+                val viewModel: RecipeSearchViewModel = hiltViewModel()
+                val recipeType = backStackEntry.arguments?.getString("recipeType") ?: ""
+                androidx.compose.runtime.LaunchedEffect(recipeType) {
+                    viewModel.searchRecipes(recipeType)
+                }
+                val recipes = viewModel.recipes.collectAsState().value
+                RecipeSearchScreen(
+                    recipeType = recipeType,
+                    recipes = recipes,
+                    onRecipeClick = { /* TODO: Implement recipe details navigation */ }
+                )
             }
 
         }

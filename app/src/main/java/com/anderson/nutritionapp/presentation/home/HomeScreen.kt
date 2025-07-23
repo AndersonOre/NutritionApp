@@ -37,7 +37,9 @@ import com.anderson.nutritionapp.domain.model.FoodCategoryModel
 @Composable
 fun HomeScreen(
     categories: List<FoodCategoryModel>,
+    recipes: List<String>,
     onCategoryClick: (FoodCategoryModel) -> Unit,
+    onRecipeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -56,6 +58,23 @@ fun HomeScreen(
         ) {
             items(categories) { category ->
                 CategoryCard(category, onClick = { onCategoryClick(category) })
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Recipes Types",
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold, fontSize = 24.sp
+            ),
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(recipes) { recipe ->
+                RecipeCard(recipe, onClick = { onRecipeClick(recipe) })
             }
         }
     }
@@ -123,6 +142,31 @@ fun CategoryCard(
     }
 }
 
+@Composable
+fun RecipeCard(
+    recipe: String,
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        modifier = Modifier
+            .width(140.dp)
+            .clickable { onClick() }
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = recipe,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+            )
+        }
+    }
+}
 @Preview
 @Composable
 fun PreviewHomeScreen() {
@@ -132,5 +176,14 @@ fun PreviewHomeScreen() {
             FoodCategoryModel("Fruit description", "2", "Fruit"),
             FoodCategoryModel("Meat description", "3", "Meat"),
             FoodCategoryModel("Vegetables description", "4", "Vegetables")
-        ), onCategoryClick = {})
+        ),
+        recipes = listOf(
+            "Appetizer",
+            "Soup",
+            "Main Dish",
+            "Dessert"
+        ),
+        onCategoryClick = {},
+        onRecipeClick = {}
+    )
 }

@@ -5,5 +5,7 @@ data class NutritionUseCases(
 //    val getFoodCategoryById: GetFoodCategoryById,
 //    val getFoodsByCategory: GetFoodsByCategory,
     val getFoodById: GetFoodById,
-    val searchFoods: SearchFoods
+    val searchFoods: SearchFoods,
+    val getRecipeTypes: GetRecipeTypes,
+    val searchRecipes: SearchRecipes
 )

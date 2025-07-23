@@ -15,8 +15,10 @@ import com.anderson.nutritionapp.domain.usecase.app_entry.ReadAppEntry
 import com.anderson.nutritionapp.domain.usecase.app_entry.SaveAppEntry
 import com.anderson.nutritionapp.domain.usecase.nutrition.GetFoodById
 import com.anderson.nutritionapp.domain.usecase.nutrition.GetFoodCategories
+import com.anderson.nutritionapp.domain.usecase.nutrition.GetRecipeTypes
 import com.anderson.nutritionapp.domain.usecase.nutrition.NutritionUseCases
 import com.anderson.nutritionapp.domain.usecase.nutrition.SearchFoods
+import com.anderson.nutritionapp.domain.usecase.nutrition.SearchRecipes
 import com.anderson.nutritionapp.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -72,7 +74,9 @@ object AppModule {
         return NutritionUseCases(
             getFoodCategories = GetFoodCategories(nutritionRepository),
             searchFoods = SearchFoods(nutritionRepository),
-            getFoodById = GetFoodById(nutritionRepository)
+            getFoodById = GetFoodById(nutritionRepository),
+            getRecipeTypes = GetRecipeTypes(nutritionRepository),
+            searchRecipes = SearchRecipes(nutritionRepository)
         )
     }
 

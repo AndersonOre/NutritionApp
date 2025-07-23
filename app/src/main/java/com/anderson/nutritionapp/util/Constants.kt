@@ -8,4 +8,4 @@ object Constants {
 
     const val BASE_URL = "https://platform.fatsecret.com/rest/"
 
-  }
+ }

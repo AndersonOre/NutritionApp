@@ -3,6 +3,7 @@ package com.anderson.nutritionapp.data.repository
 import com.anderson.nutritionapp.data.remote.NutritionApi
 import com.anderson.nutritionapp.data.remote.dto.FoodByIdResponseModel
 import com.anderson.nutritionapp.data.remote.dto.FoodSearchResponseModel
+import com.anderson.nutritionapp.data.remote.dto.RecipeSearchResponseModel
 import com.anderson.nutritionapp.domain.model.FoodCategoryModel
 import com.anderson.nutritionapp.domain.repository.NutritionRepository
 import kotlinx.coroutines.flow.Flow
@@ -57,6 +58,31 @@ class NutritionRepositoryImpl(
             }
         } catch (e: Exception) {
             null
+        }
+    }
+
+    override fun getRecipeTypes(): Flow<List<String>> = flow {
+        try {
+            val response = nutritionApi.getRecipeTypes()
+            if (response.isSuccessful) {
+                val types = response.body()?.recipe_types?.recipe_type
+                emit(types ?: emptyList())
+            } else {
+                emit(emptyList())
+            }
+        } catch (e: Exception) {
+            emit(emptyList())
+        }
+    }
+
+    override fun searchRecipes(recipeType: String, maxResults: Int): Flow<RecipeSearchResponseModel> = flow {
+        try {
+            val response = nutritionApi.searchRecipes(recipeType, maxResults)
+            if (response.isSuccessful) {
+                response.body()?.let { emit(it) }
+            }
+        } catch (e: Exception) {
+            // Handle error as needed
         }
     }
 

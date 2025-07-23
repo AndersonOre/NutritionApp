@@ -1,4 +1,4 @@
-package com.anderson.nutritionapp.presentation.food_search
+package com.anderson.nutritionapp.presentation.recipe_search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,19 +13,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import coil.compose.AsyncImage
-import com.anderson.nutritionapp.data.remote.dto.FoodSearchResponseModel
+import com.anderson.nutritionapp.data.remote.dto.RecipeSearchResponseModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FoodSearchScreen(
-    categoryName: String,
-    foodSearchResults: FoodSearchResponseModel?,
-    onFoodClick: (foodId: String) -> Unit = {}
+fun RecipeSearchScreen(
+    recipeType: String,
+    recipes: RecipeSearchResponseModel?,
+    onRecipeClick: (recipeId: String) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Results for: $categoryName") }
+                title = { Text("Recipes: $recipeType") }
             )
         }
     ) { paddingValues ->
@@ -36,21 +36,17 @@ fun FoodSearchScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            foodSearchResults?.let { results ->
-
+            recipes?.let { results ->
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(results.foods_search.results.food) { food ->
+                    items(results.recipes.recipe) { recipe ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable(
-                                    onClick = { onFoodClick(food.food_id) },
-                                ),
-
+                                .clickable { onRecipeClick(recipe.recipe_id) },
                             colors = CardDefaults.cardColors(containerColor = Color.White)
                         ) {
                             Row(
@@ -59,30 +55,26 @@ fun FoodSearchScreen(
                                     .padding(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                food.food_images?.food_image?.let { images ->
-                                    if (images.isNotEmpty()) {
-                                        val middleIndex = images.size / 2
-                                        val imageUrl = images[middleIndex].image_url
-                                        AsyncImage(
-                                            model = imageUrl,
-                                            contentDescription = food.food_name,
-                                            modifier = Modifier
-                                                .size(80.dp).clip(RoundedCornerShape(8.dp))
-                                        )
-                                    }
+                                recipe.recipe_image?.let { imageUrl ->
+                                    AsyncImage(
+                                        model = imageUrl,
+                                        contentDescription = recipe.recipe_name,
+                                        modifier = Modifier.size(80.dp).clip(RoundedCornerShape(8.dp))
+                                    )
                                 }
                                 Spacer(modifier = Modifier.width(16.dp))
-                                Column(
-                                    modifier = Modifier.weight(1f)
-                                ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(recipe.recipe_name, style = MaterialTheme.typography.bodyLarge)
                                     Text(
-                                        text = food.food_name,
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                    Text(
-                                        text = "Calories: ${food.servings?.serving?.firstOrNull()?.calories ?: "N/A"}",
+                                        "Calories: ${recipe.recipe_nutrition.calories}",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = Color.Gray
+                                    )
+                                    Text(
+                                        recipe.recipe_description,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.Gray,
+                                        maxLines = 2
                                     )
                                 }
                             }
@@ -90,7 +82,7 @@ fun FoodSearchScreen(
                     }
                 }
             } ?: Text(
-                text = "No results found.",
+                text = "No recipes found.",
                 style = MaterialTheme.typography.bodyLarge
             )
         }

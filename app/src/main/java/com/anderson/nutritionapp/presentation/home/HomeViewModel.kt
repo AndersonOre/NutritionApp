@@ -18,11 +18,19 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
 
     val food_categories = nutritionUseCases.getFoodCategories()
+    private val _recipeTypes = MutableStateFlow<List<String>>(emptyList())
+    val recipeTypes: StateFlow<List<String>> = _recipeTypes
 
     init {
         viewModelScope.launch {
             food_categories.collectLatest { categories ->
                 Log.d("HomeViewModel", "Fetched categories: $categories")
+            }
+        }
+
+        viewModelScope.launch {
+            nutritionUseCases.getRecipeTypes().collectLatest { types ->
+                _recipeTypes.value = types
             }
         }
     }
