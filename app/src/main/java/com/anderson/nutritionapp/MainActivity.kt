@@ -29,26 +29,9 @@ class MainActivity : ComponentActivity() {
 
     val viewModel by viewModels<MainViewModel>()
 
-    @Inject
-    lateinit var dao: FoodDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            dao.upsert(
-                Food(
-                    food_id = "1",
-                    food_name = "Apple",
-                    food_images = null,
-                    food_type = "Generic",
-                    food_sub_categories = null,
-                    food_url = "null",
-                    food_attributes = null,
-                    servings = null
-                )
-            )
-        }
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {

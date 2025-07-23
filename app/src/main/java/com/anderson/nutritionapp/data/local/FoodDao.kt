@@ -19,4 +19,8 @@ interface FoodDao {
 
     @Query("SELECT * FROM Food")
     fun getFoods(): Flow<List<Food>>
+
+    // In FoodDao.kt
+    @Query("SELECT EXISTS(SELECT 1 FROM Food WHERE food_id = :foodId)")
+    suspend fun isFavorite(foodId: String): Boolean
 }
