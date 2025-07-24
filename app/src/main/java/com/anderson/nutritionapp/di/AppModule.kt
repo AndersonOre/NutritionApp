@@ -21,6 +21,7 @@ import com.anderson.nutritionapp.domain.usecase.nutrition.NutritionUseCases
 import com.anderson.nutritionapp.domain.usecase.nutrition.SearchFoods
 import com.anderson.nutritionapp.domain.usecase.nutrition.SearchRecipes
 import com.anderson.nutritionapp.util.Constants.BASE_URL
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -99,5 +100,9 @@ object AppModule {
     fun provideNutritionDao(
         nutritionDatabase: NutritionDatabase
     ): FoodDao = nutritionDatabase.foodDao
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
 }

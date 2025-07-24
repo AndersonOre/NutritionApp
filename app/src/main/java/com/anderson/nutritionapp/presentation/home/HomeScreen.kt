@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anderson.nutritionapp.domain.model.FoodCategoryModel
+import com.anderson.nutritionapp.presentation.user_auth.AuthViewModel
 
 @Composable
 fun HomeScreen(
@@ -43,14 +44,26 @@ fun HomeScreen(
     recipes: List<String>,
     onCategoryClick: (FoodCategoryModel) -> Unit,
     onRecipeClick: (String) -> Unit,
+    authViewModel: AuthViewModel,
     modifier: Modifier = Modifier
 ) {
+
+    val user = authViewModel.currentUser()
+    val welcomeText = user?.email?.substringBefore("@")?.let { "Welcome, $it!" } ?: "Welcome!"
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(top = 50.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
+        Text(
+            text = welcomeText,
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold, fontSize = 24.sp
+            ),
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
         Text(
             text = "Categories", style = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.Bold, fontSize = 24.sp
@@ -177,24 +190,4 @@ fun RecipeCard(
             )
         }
     }
-}
-@Preview
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen(
-        categories = listOf(
-            FoodCategoryModel("Fish description", "1", "Fish"),
-            FoodCategoryModel("Fruit description", "2", "Fruit"),
-            FoodCategoryModel("Meat description", "3", "Meat"),
-            FoodCategoryModel("Vegetables description", "4", "Vegetables")
-        ),
-        recipes = listOf(
-            "Appetizer",
-            "Soup",
-            "Main Dish",
-            "Dessert"
-        ),
-        onCategoryClick = {},
-        onRecipeClick = {}
-    )
 }

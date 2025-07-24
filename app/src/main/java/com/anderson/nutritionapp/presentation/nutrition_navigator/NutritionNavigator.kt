@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +34,7 @@ import com.anderson.nutritionapp.presentation.nutrition_navigator.components.Nut
 import com.anderson.nutritionapp.presentation.recipe_details.RecipeDetailsScreen
 import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchScreen
 import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchViewModel
+import com.anderson.nutritionapp.presentation.user_auth.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,14 +113,15 @@ fun NutritionNavigator() {
                     },
                     onRecipeClick = { recipeType ->
                         navController.navigate("RecipeTypeScreen/$recipeType")
-                    }
+                    },
+                    authViewModel = hiltViewModel<AuthViewModel>(),
                 )
 
             }
             composable(route = "${Route.FoodSearchScreen}/{categoryName}") { backStackEntry ->
                 val viewModel: HomeViewModel = hiltViewModel()
                 val categoryName = backStackEntry.arguments?.getString("categoryName") ?: ""
-                androidx.compose.runtime.LaunchedEffect(categoryName) {
+                LaunchedEffect(categoryName) {
                     viewModel.searchFoods(categoryName)
                 }
                 val foodSearchResults = viewModel.foodSearchResults.collectAsState().value
@@ -137,7 +141,7 @@ fun NutritionNavigator() {
             composable(route = "RecipeTypeScreen/{recipeType}") { backStackEntry ->
                 val viewModel: RecipeSearchViewModel = hiltViewModel()
                 val recipeType = backStackEntry.arguments?.getString("recipeType") ?: ""
-                androidx.compose.runtime.LaunchedEffect(recipeType) {
+                LaunchedEffect(recipeType) {
                     viewModel.searchRecipes(recipeType)
                 }
                 val recipes = viewModel.recipes.collectAsState().value
@@ -151,7 +155,7 @@ fun NutritionNavigator() {
             }
             composable(route = Route.SearchScreen.route) {
                 // Replace with your actual SearchScreen Composable
-                androidx.compose.material3.Text("Search Screen Placeholder")
+                Text("Search Screen Placeholder")
             }
 
             composable(route = Route.FoodFavoritesScreen.route) {

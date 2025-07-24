@@ -1,11 +1,15 @@
 package com.anderson.nutritionapp.presentation.user_auth
 
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class AuthViewModel : ViewModel() {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val auth: FirebaseAuth
+) : ViewModel() {
 
     fun register(email: String, password: String, onResult: (Boolean, FirebaseUser?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
