@@ -51,7 +51,7 @@ fun NutritionBottomNavigation(
     ) {
         NavigationBar(
             modifier = Modifier
-                .clip(RoundedCornerShape(32.dp))
+                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp, bottomStart = 0.dp, bottomEnd = 0.dp))
                 .fillMaxWidth(),
             containerColor = MaterialTheme.colorScheme.surface,
             tonalElevation = 5.dp

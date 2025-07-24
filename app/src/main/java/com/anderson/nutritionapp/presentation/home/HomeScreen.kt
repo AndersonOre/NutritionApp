@@ -49,7 +49,6 @@ fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF6F6F6))
             .padding(top = 50.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
         Text(
@@ -68,7 +67,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Recipes Types",
+            text = "Recipe Types",
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.Bold, fontSize = 24.sp
             ),
@@ -122,7 +121,8 @@ fun CategoryCard(
                 text = category.name,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -172,7 +172,8 @@ fun RecipeCard(
         ) {
             Text(
                 text = recipe,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }
