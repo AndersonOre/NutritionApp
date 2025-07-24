@@ -15,6 +15,7 @@ import com.anderson.nutritionapp.domain.usecase.app_entry.ReadAppEntry
 import com.anderson.nutritionapp.domain.usecase.app_entry.SaveAppEntry
 import com.anderson.nutritionapp.domain.usecase.nutrition.GetFoodById
 import com.anderson.nutritionapp.domain.usecase.nutrition.GetFoodCategories
+import com.anderson.nutritionapp.domain.usecase.nutrition.GetRecipeDetails
 import com.anderson.nutritionapp.domain.usecase.nutrition.GetRecipeTypes
 import com.anderson.nutritionapp.domain.usecase.nutrition.NutritionUseCases
 import com.anderson.nutritionapp.domain.usecase.nutrition.SearchFoods
@@ -76,7 +77,8 @@ object AppModule {
             searchFoods = SearchFoods(nutritionRepository),
             getFoodById = GetFoodById(nutritionRepository),
             getRecipeTypes = GetRecipeTypes(nutritionRepository),
-            searchRecipes = SearchRecipes(nutritionRepository)
+            searchRecipes = SearchRecipes(nutritionRepository),
+            getRecipeDetails = GetRecipeDetails(nutritionRepository)
         )
     }
 

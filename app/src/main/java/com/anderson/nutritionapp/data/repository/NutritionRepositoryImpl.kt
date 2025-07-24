@@ -3,6 +3,7 @@ package com.anderson.nutritionapp.data.repository
 import com.anderson.nutritionapp.data.remote.NutritionApi
 import com.anderson.nutritionapp.data.remote.dto.FoodByIdResponseModel
 import com.anderson.nutritionapp.data.remote.dto.FoodSearchResponseModel
+import com.anderson.nutritionapp.data.remote.dto.RecipeDetailsResponseModel
 import com.anderson.nutritionapp.data.remote.dto.RecipeSearchResponseModel
 import com.anderson.nutritionapp.domain.model.FoodCategoryModel
 import com.anderson.nutritionapp.domain.repository.NutritionRepository
@@ -83,6 +84,15 @@ class NutritionRepositoryImpl(
             }
         } catch (e: Exception) {
             // Handle error as needed
+        }
+    }
+
+    override suspend fun getRecipeDetails(recipeId: String): RecipeDetailsResponseModel? {
+        return try {
+            val response = nutritionApi.getRecipeDetails(recipeId)
+            if (response.isSuccessful) response.body() else null
+        } catch (e: Exception) {
+            null
         }
     }
 

@@ -29,6 +29,7 @@ import com.anderson.nutritionapp.presentation.home.HomeViewModel
 import com.anderson.nutritionapp.presentation.navgraph.Route
 import com.anderson.nutritionapp.presentation.nutrition_navigator.components.BottomNavigationItem
 import com.anderson.nutritionapp.presentation.nutrition_navigator.components.NutritionBottomNavigation
+import com.anderson.nutritionapp.presentation.recipe_details.RecipeDetailsScreen
 import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchScreen
 import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchViewModel
 
@@ -143,8 +144,14 @@ fun NutritionNavigator() {
                 RecipeSearchScreen(
                     recipeType = recipeType,
                     recipes = recipes,
-                    onRecipeClick = { /* TODO: Implement recipe details navigation */ }
+                    onRecipeClick = { recipeId ->
+                        navController.navigate("${Route.RecipeDetailsScreen}/$recipeId")
+                    }
                 )
+            }
+            composable(route = Route.SearchScreen.route) {
+                // Replace with your actual SearchScreen Composable
+                androidx.compose.material3.Text("Search Screen Placeholder")
             }
 
             composable(route = Route.FoodFavoritesScreen.route) {
@@ -154,6 +161,11 @@ fun NutritionNavigator() {
                         navController.navigate("${Route.FoodDetailsScreen}/$foodId")
                     }
                 )
+            }
+
+            composable(route = "${Route.RecipeDetailsScreen}/{recipeId}") { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
+                RecipeDetailsScreen(recipeId = recipeId)
             }
         }
     }

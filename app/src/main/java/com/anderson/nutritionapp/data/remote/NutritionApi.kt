@@ -4,6 +4,7 @@ package com.anderson.nutritionapp.data.remote
 import com.anderson.nutritionapp.data.remote.dto.FoodByIdResponseModel
 import com.anderson.nutritionapp.data.remote.dto.FoodCategoriesResponseModel
 import com.anderson.nutritionapp.data.remote.dto.FoodSearchResponseModel
+import com.anderson.nutritionapp.data.remote.dto.RecipeDetailsResponseModel
 import com.anderson.nutritionapp.data.remote.dto.RecipeSearchResponseModel
 import com.anderson.nutritionapp.data.remote.dto.RecipeTypesResponseModel
 import retrofit2.http.GET
@@ -46,5 +47,11 @@ interface NutritionApi {
         @Query("max_results") maxResults: Int = 20,
         @Query("format") format: String = "json"
     ): Response<RecipeSearchResponseModel>
+
+    @GET("recipe/v2")
+    suspend fun getRecipeDetails(
+        @Query("recipe_id") recipeId: String,
+        @Query("format") format: String = "json"
+    ): Response<RecipeDetailsResponseModel>
 
 }
