@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anderson.nutritionapp.domain.usecase.app_entry.AppEntryUseCases
 import com.anderson.nutritionapp.presentation.navgraph.Route
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,24 +19,49 @@ class MainViewModel @Inject constructor(
     private val appEntryUseCases: AppEntryUseCases
 ): ViewModel(){
 
-     var splashCondition by mutableStateOf(true)
-         private set
+    var splashCondition by mutableStateOf(true)
+        private set
 
-
-    var startDestination by mutableStateOf(Route.AppStartNavigation.route)
+    var startDestination by mutableStateOf(Route.LoginScreen.route)
         private set
 
     init {
-        appEntryUseCases.readAppEntry().onEach {
-            shouldStartFromHomeScreen ->
-            if( shouldStartFromHomeScreen ) {
-                startDestination = Route.NutritionNavigation.route
+        viewModelScope.launch {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
+                // Not logged in: show login
+                startDestination = Route.LoginScreen.route
+                splashCondition = false
             } else {
-                startDestination = Route.AppStartNavigation.route
+                // Logged in: check onboarding
+                appEntryUseCases.readAppEntry().onEach { onboardingDone ->
+                    startDestination = if (onboardingDone) {
+                        Route.NutritionNavigation.route
+                    } else {
+                        Route.AppStartNavigation.route // This will show onboarding
+                    }
+                    splashCondition = false
+                }.launchIn(this)
             }
-            delay(300)
-            splashCondition = false
-        }.launchIn(viewModelScope)
+        }
     }
 
+    // In MainViewModel.kt
+    fun refreshStartDestination() {
+        viewModelScope.launch {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
+                startDestination = Route.LoginScreen.route
+            } else {
+                appEntryUseCases.readAppEntry().onEach { onboardingDone ->
+                    startDestination = if (onboardingDone) {
+                        Route.NutritionNavigation.route
+                    } else {
+                        Route.AppStartNavigation.route
+                    }
+                }.launchIn(this)
+            }
+            splashCondition = false
+        }
+    }
 }
