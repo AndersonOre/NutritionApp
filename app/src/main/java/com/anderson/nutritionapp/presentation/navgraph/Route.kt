@@ -1,7 +1,10 @@
 package com.anderson.nutritionapp.presentation.navgraph
 
+import androidx.navigation.NamedNavArgument
+
 sealed class Route(
-    val route: String
+    val route: String,
+    val arguments: List<NamedNavArgument> = emptyList()
 ) {
     object OnBoardingScreen : Route(route = "onboarding_screen")
     object FoodSearchScreen : Route(route = "food_search_screen")
