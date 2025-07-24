@@ -16,25 +16,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Blue,
-    background = Black,
-    error = DarkRed,
-    surface = LightBlack
-)
-
 private val LightColorScheme = lightColorScheme(
     primary = Blue,
-    background = Color.White,
-    error = LightRed,
-    surface = Color.White
+    background = Color(0xFFF5F5F5), // light gray
+    surface = Color.White,          // pure white for cards/surfaces
+    error = LightRed
 )
 
+private val DarkColorScheme = darkColorScheme(
+    primary = Blue,
+    background = Color(0xFF121212), // dark background
+    surface = Color(0xFF1E1E1E),    // slightly lighter for surfaces
+    error = DarkRed
+)
 @Composable
 fun NutritionAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -49,7 +48,6 @@ fun NutritionAppTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }

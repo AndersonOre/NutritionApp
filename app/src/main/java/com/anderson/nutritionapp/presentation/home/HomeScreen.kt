@@ -42,11 +42,12 @@ fun HomeScreen(
     onRecipeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0xFFF6F6F6))
-            .padding(16.dp)
+            .padding(top = 50.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
         Text(
             text = "Categories", style = MaterialTheme.typography.headlineSmall.copy(

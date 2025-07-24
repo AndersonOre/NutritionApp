@@ -21,6 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.anderson.nutritionapp.R
 import com.anderson.nutritionapp.presentation.food_details.FoodDetailsScreen
+import com.anderson.nutritionapp.presentation.food_favorites.FavoritesScreen
+import com.anderson.nutritionapp.presentation.food_favorites.FavoritesViewModel
 import com.anderson.nutritionapp.presentation.food_search.FoodSearchScreen
 import com.anderson.nutritionapp.presentation.home.HomeScreen
 import com.anderson.nutritionapp.presentation.home.HomeViewModel
@@ -142,6 +144,15 @@ fun NutritionNavigator() {
                     recipeType = recipeType,
                     recipes = recipes,
                     onRecipeClick = { /* TODO: Implement recipe details navigation */ }
+                )
+            }
+
+            composable(route = Route.FoodFavoritesScreen.route) {
+                OnBackClickStateSaver(navController = navController)
+                FavoritesScreen(
+                    onFoodClick = { foodId ->
+                        navController.navigate("${Route.FoodDetailsScreen}/$foodId")
+                    }
                 )
             }
         }
