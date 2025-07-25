@@ -8,5 +8,5 @@ object Constants {
 
     const val BASE_URL = "https://platform.fatsecret.com/rest/"
 
-    const val BEARER_TOKEN =
+    const val BEARER_TOKEN = "bearer_token_from_fatsecret"
 }
