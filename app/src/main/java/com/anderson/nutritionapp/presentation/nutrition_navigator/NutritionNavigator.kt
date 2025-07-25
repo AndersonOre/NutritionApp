@@ -22,9 +22,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.anderson.nutritionapp.R
+import com.anderson.nutritionapp.presentation.analytics.LogScreenView
 import com.anderson.nutritionapp.presentation.food_details.FoodDetailsScreen
 import com.anderson.nutritionapp.presentation.food_favorites.FavoritesScreen
-import com.anderson.nutritionapp.presentation.food_favorites.FavoritesViewModel
 import com.anderson.nutritionapp.presentation.food_search.FoodSearchScreen
 import com.anderson.nutritionapp.presentation.home.HomeScreen
 import com.anderson.nutritionapp.presentation.home.HomeViewModel
@@ -62,35 +62,27 @@ fun NutritionNavigator() {
 
     //Hide the bottom navigation when the user is in the details screen
     val isBottomBarVisible = remember(key1 = backStackState) {
-        backStackState?.destination?.route == Route.HomeScreen.route ||
-                backStackState?.destination?.route == Route.SearchScreen.route ||
-                backStackState?.destination?.route == Route.FoodFavoritesScreen.route
+        backStackState?.destination?.route == Route.HomeScreen.route || backStackState?.destination?.route == Route.SearchScreen.route || backStackState?.destination?.route == Route.FoodFavoritesScreen.route
     }
 
     Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
         if (isBottomBarVisible) {
             NutritionBottomNavigation(
-                items = bottomNavigationItems,
-                selected = selectedItem,
-                onItemSelected = { index ->
+                items = bottomNavigationItems, selected = selectedItem, onItemSelected = { index ->
                     when (index) {
                         0 -> navigateToTab(
-                            navController = navController,
-                            route = Route.HomeScreen.route
+                            navController = navController, route = Route.HomeScreen.route
                         )
 
                         1 -> navigateToTab(
-                            navController = navController,
-                            route = Route.SearchScreen.route
+                            navController = navController, route = Route.SearchScreen.route
                         )
 
                         2 -> navigateToTab(
-                            navController = navController,
-                            route = Route.FoodFavoritesScreen.route
+                            navController = navController, route = Route.FoodFavoritesScreen.route
                         )
                     }
-                }
-            )
+                })
         }
     }) {
         val bottomPadding = it.calculateBottomPadding()
@@ -104,7 +96,7 @@ fun NutritionNavigator() {
                 val viewModel: HomeViewModel = hiltViewModel()
                 val categories = viewModel.food_categories.collectAsState(initial = emptyList())
                 val recipeTypes = viewModel.recipeTypes.collectAsState(initial = emptyList())
-
+                LogScreenView("HomeScreen")
                 HomeScreen(
                     categories = categories.value,
                     recipes = recipeTypes.value,
@@ -125,6 +117,7 @@ fun NutritionNavigator() {
                     viewModel.searchFoods(categoryName)
                 }
                 val foodSearchResults = viewModel.foodSearchResults.collectAsState().value
+                LogScreenView("FoodSearchScreen: $categoryName")
                 FoodSearchScreen(
                     categoryName = categoryName,
                     foodSearchResults = foodSearchResults,
@@ -135,6 +128,7 @@ fun NutritionNavigator() {
 
             composable(route = "${Route.FoodDetailsScreen}/{foodId}") { backStackEntry ->
                 val foodId = backStackEntry.arguments?.getString("foodId") ?: ""
+                LogScreenView("FoodDetailsScreen: $foodId")
                 FoodDetailsScreen(foodId = foodId)
             }
 
@@ -145,13 +139,11 @@ fun NutritionNavigator() {
                     viewModel.searchRecipes(recipeType)
                 }
                 val recipes = viewModel.recipes.collectAsState().value
+                LogScreenView("RecipeSearchScreen: $recipeType")
                 RecipeSearchScreen(
-                    recipeType = recipeType,
-                    recipes = recipes,
-                    onRecipeClick = { recipeId ->
+                    recipeType = recipeType, recipes = recipes, onRecipeClick = { recipeId ->
                         navController.navigate("${Route.RecipeDetailsScreen}/$recipeId")
-                    }
-                )
+                    })
             }
             composable(route = Route.SearchScreen.route) {
                 // Replace with your actual SearchScreen Composable
@@ -160,15 +152,16 @@ fun NutritionNavigator() {
 
             composable(route = Route.FoodFavoritesScreen.route) {
                 OnBackClickStateSaver(navController = navController)
+                LogScreenView("FavoritesScreen")
                 FavoritesScreen(
                     onFoodClick = { foodId ->
                         navController.navigate("${Route.FoodDetailsScreen}/$foodId")
-                    }
-                )
+                    })
             }
 
             composable(route = "${Route.RecipeDetailsScreen}/{recipeId}") { backStackEntry ->
                 val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
+                LogScreenView("RecipeDetailsScreen: $recipeId")
                 RecipeDetailsScreen(recipeId = recipeId)
             }
         }
@@ -179,8 +172,7 @@ fun NutritionNavigator() {
 fun OnBackClickStateSaver(navController: NavController) {
     BackHandler(true) {
         navigateToTab(
-            navController = navController,
-            route = Route.HomeScreen.route
+            navController = navController, route = Route.HomeScreen.route
         )
     }
 }

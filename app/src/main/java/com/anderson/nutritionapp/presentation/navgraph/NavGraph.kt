@@ -2,7 +2,6 @@ package com.anderson.nutritionapp.presentation.navgraph
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,15 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.anderson.nutritionapp.MainViewModel
-import com.anderson.nutritionapp.presentation.food_details.FoodDetailsScreen
-import com.anderson.nutritionapp.presentation.food_search.FoodSearchScreen
-import com.anderson.nutritionapp.presentation.home.HomeScreen
-import com.anderson.nutritionapp.presentation.home.HomeViewModel
+import com.anderson.nutritionapp.presentation.analytics.LogScreenView
 import com.anderson.nutritionapp.presentation.nutrition_navigator.NutritionNavigator
 import com.anderson.nutritionapp.presentation.onboarding.OnBoardingScreen
 import com.anderson.nutritionapp.presentation.onboarding.OnBoardingViewModel
-import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchScreen
-import com.anderson.nutritionapp.presentation.recipe_search.RecipeSearchViewModel
 import com.anderson.nutritionapp.presentation.user_auth.AuthViewModel
 import com.anderson.nutritionapp.presentation.user_auth.LoginScreen
 import com.anderson.nutritionapp.presentation.user_auth.RegisterScreen
@@ -36,50 +30,46 @@ fun NavGraph(
 
         composable(route = Route.LoginScreen.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
-            LoginScreen(
-                onLogin = { email, password ->
-                    kotlinx.coroutines.suspendCancellableCoroutine<String?> { cont ->
-                        authViewModel.login(email, password) { success, _, errorMsg ->
-                            if (success) {
-                                navController.navigate(Route.NutritionNavigation.route) {
-                                    popUpTo(Route.AppStartNavigation.route) { inclusive = true }
-                                }
-                                cont.resume(null, null)
-                            } else {
-                                cont.resume(errorMsg ?: "Invalid email or password", null)
+            LogScreenView("LoginScreen")
+            LoginScreen(onLogin = { email, password ->
+                kotlinx.coroutines.suspendCancellableCoroutine<String?> { cont ->
+                    authViewModel.login(email, password) { success, _, errorMsg ->
+                        if (success) {
+                            navController.navigate(Route.NutritionNavigation.route) {
+                                popUpTo(Route.AppStartNavigation.route) { inclusive = true }
                             }
+                            cont.resume(null, null)
+                        } else {
+                            cont.resume(errorMsg ?: "Invalid email or password", null)
                         }
                     }
-                },
-                onRegister = {
-                    navController.navigate(Route.RegisterScreen.route)
                 }
-            )
+            }, onRegister = {
+                navController.navigate(Route.RegisterScreen.route)
+            })
         }
 
         composable(route = Route.RegisterScreen.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
             val mainViewModel: MainViewModel = hiltViewModel()
-            val startDestination = mainViewModel.startDestination // observe as state if mutableStateOf
+            val startDestination =
+                mainViewModel.startDestination // observe as state if mutableStateOf
 
             var shouldNavigate by remember { mutableStateOf(false) }
-
-            RegisterScreen(
-                onRegister = { email, password ->
-                    kotlinx.coroutines.suspendCancellableCoroutine<String?> { cont ->
-                        authViewModel.register(email, password) { success, _ ->
-                            if (success) {
-                                mainViewModel.refreshStartDestination()
-                                shouldNavigate = true
-                                cont.resume(null, null)
-                            } else {
-                                cont.resume("Registration failed", null)
-                            }
+            LogScreenView("RegisterScreen")
+            RegisterScreen(onRegister = { email, password ->
+                kotlinx.coroutines.suspendCancellableCoroutine<String?> { cont ->
+                    authViewModel.register(email, password) { success, _ ->
+                        if (success) {
+                            mainViewModel.refreshStartDestination()
+                            shouldNavigate = true
+                            cont.resume(null, null)
+                        } else {
+                            cont.resume("Registration failed", null)
                         }
                     }
-                },
-                onBack = { navController.popBackStack() }
-            )
+                }
+            }, onBack = { navController.popBackStack() })
 
             if (shouldNavigate) {
                 LaunchedEffect(startDestination) {
@@ -96,14 +86,13 @@ fun NavGraph(
         ) {
             composable(route = Route.OnBoardingScreen.route) {
                 val viewModel: OnBoardingViewModel = hiltViewModel()
+                LogScreenView("OnBoardingScreen")
                 OnBoardingScreen(
-                    event = viewModel::onEvent,
-                    onFinished = {
+                    event = viewModel::onEvent, onFinished = {
                         navController.navigate(Route.NutritionNavigation.route) {
                             popUpTo(Route.OnBoardingScreen.route) { inclusive = true }
                         }
-                    }
-                )
+                    })
             }
 
         }
@@ -112,7 +101,7 @@ fun NavGraph(
             route = Route.NutritionNavigation.route,
             startDestination = Route.NutritionNavigationScreen.route
         ) {
-            composable(route = Route.NutritionNavigationScreen.route){
+            composable(route = Route.NutritionNavigationScreen.route) {
                 NutritionNavigator()
             }
         }
