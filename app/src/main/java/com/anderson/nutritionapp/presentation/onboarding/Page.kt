@@ -27,7 +27,7 @@ val pages = listOf<Page>(
 
         "Lorem ipsum is simply dummy text of the printing and typesetting inddustry",
 
-        R.drawable.onboarding1
+        R.drawable.onboarding2
 
     ),
 
@@ -37,7 +37,7 @@ val pages = listOf<Page>(
 
         "Lorem ipsum is simply dummy text of the printing and typesetting inddustry",
 
-        R.drawable.onboarding1
+        R.drawable.onboarding3
 
     ),
 

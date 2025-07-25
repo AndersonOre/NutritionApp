@@ -43,7 +43,7 @@ fun NutritionNavigator() {
     val bottomNavigationItems = remember {
         listOf(
             BottomNavigationItem(icon = R.drawable.ic_home, text = "Home"),
-            BottomNavigationItem(icon = R.drawable.ic_search, text = "Search"),
+//            BottomNavigationItem(icon = R.drawable.ic_search, text = "Search"),
             BottomNavigationItem(icon = R.drawable.ic_bookmark, text = "Bookmark"),
         )
     }
@@ -55,8 +55,8 @@ fun NutritionNavigator() {
     }
     selectedItem = when (backStackState?.destination?.route) {
         Route.HomeScreen.route -> 0
-        Route.SearchScreen.route -> 1
-        Route.FoodFavoritesScreen.route -> 2
+//        Route.SearchScreen.route -> 1
+        Route.FoodFavoritesScreen.route -> 1
         else -> 0
     }
 
@@ -74,11 +74,11 @@ fun NutritionNavigator() {
                             navController = navController, route = Route.HomeScreen.route
                         )
 
-                        1 -> navigateToTab(
-                            navController = navController, route = Route.SearchScreen.route
-                        )
+//                        1 -> navigateToTab(
+//                            navController = navController, route = Route.SearchScreen.route
+//                        )
 
-                        2 -> navigateToTab(
+                        1 -> navigateToTab(
                             navController = navController, route = Route.FoodFavoritesScreen.route
                         )
                     }
@@ -123,13 +123,17 @@ fun NutritionNavigator() {
                     foodSearchResults = foodSearchResults,
                     onFoodClick = { foodId ->
                         navController.navigate("${Route.FoodDetailsScreen}/$foodId")
-                    })
+                    },
+                    onBackClick = { navController.popBackStack() })
             }
 
             composable(route = "${Route.FoodDetailsScreen}/{foodId}") { backStackEntry ->
                 val foodId = backStackEntry.arguments?.getString("foodId") ?: ""
                 LogScreenView("FoodDetailsScreen: $foodId")
-                FoodDetailsScreen(foodId = foodId)
+                FoodDetailsScreen(
+                    foodId = foodId,
+                    onBackClick = { navController.popBackStack() }
+                )
             }
 
             composable(route = "RecipeTypeScreen/{recipeType}") { backStackEntry ->
@@ -141,9 +145,11 @@ fun NutritionNavigator() {
                 val recipes = viewModel.recipes.collectAsState().value
                 LogScreenView("RecipeSearchScreen: $recipeType")
                 RecipeSearchScreen(
-                    recipeType = recipeType, recipes = recipes, onRecipeClick = { recipeId ->
+                    recipeType = recipeType, recipes = recipes,
+                    onRecipeClick = { recipeId ->
                         navController.navigate("${Route.RecipeDetailsScreen}/$recipeId")
-                    })
+                    },
+                    onBackClick = { navController.popBackStack() })
             }
             composable(route = Route.SearchScreen.route) {
                 // Replace with your actual SearchScreen Composable
@@ -156,13 +162,16 @@ fun NutritionNavigator() {
                 FavoritesScreen(
                     onFoodClick = { foodId ->
                         navController.navigate("${Route.FoodDetailsScreen}/$foodId")
+                    },
+                    onBackClick = {
+                        navigateToTab(navController, Route.HomeScreen.route)
                     })
             }
 
             composable(route = "${Route.RecipeDetailsScreen}/{recipeId}") { backStackEntry ->
                 val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
                 LogScreenView("RecipeDetailsScreen: $recipeId")
-                RecipeDetailsScreen(recipeId = recipeId)
+                RecipeDetailsScreen(recipeId = recipeId,  onBackClick = { navController.popBackStack() })
             }
         }
     }
