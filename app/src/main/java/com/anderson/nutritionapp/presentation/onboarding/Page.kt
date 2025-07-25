@@ -13,9 +13,9 @@ val pages = listOf<Page>(
 
     Page(
 
-        "Lorem ipsum is simply dummy",
+        "Discover Healthy Recipes",
 
-        "Lorem ipsum is simply dummy text of the printing and typesetting inddustry",
+        "Explore thousands of nutritious recipes tailored to your dietary goals. Whether you're vegan, keto, or just eating clean, find meals that fit your lifestyle.",
 
         R.drawable.onboarding1
 
@@ -23,9 +23,9 @@ val pages = listOf<Page>(
 
     Page(
 
-        "Lorem ipsum is simply dummy",
+        "Track Calories with Precision",
 
-        "Lorem ipsum is simply dummy text of the printing and typesetting inddustry",
+        "Scan barcodes or search foods to get accurate calorie counts. Stay on top of your daily intake and make informed choices effortlessly.",
 
         R.drawable.onboarding2
 
@@ -33,9 +33,9 @@ val pages = listOf<Page>(
 
     Page(
 
-        "Lorem ipsum is simply dummy",
+        "Know What’s in Your Food",
 
-        "Lorem ipsum is simply dummy text of the printing and typesetting inddustry",
+        "Get detailed nutritional breakdowns: macronutrients, vitamins, minerals, and more. Understand exactly what you're eating and why it matters.",
 
         R.drawable.onboarding3
 
