@@ -21,7 +21,7 @@ interface NutritionRepository {
 
     fun getRecipeTypes(): Flow<List<String>>
 
-    fun searchRecipes(recipeType: String, maxResults: Int = 30): Flow<RecipeSearchResponseModel>
+    fun searchRecipes(recipeType: String, maxResults: Int = 30, searchExpression: String): Flow<RecipeSearchResponseModel>
 
     suspend fun getRecipeDetails(recipeId: String): RecipeDetailsResponseModel?
 

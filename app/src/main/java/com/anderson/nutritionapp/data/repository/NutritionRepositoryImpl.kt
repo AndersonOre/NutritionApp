@@ -76,9 +76,9 @@ class NutritionRepositoryImpl(
         }
     }
 
-    override fun searchRecipes(recipeType: String, maxResults: Int): Flow<RecipeSearchResponseModel> = flow {
+    override fun searchRecipes(recipeType: String, maxResults: Int, searchExpression: String): Flow<RecipeSearchResponseModel> = flow {
         try {
-            val response = nutritionApi.searchRecipes(recipeType, maxResults)
+            val response = nutritionApi.searchRecipes(recipeType, maxResults,searchExpression)
             if (response.isSuccessful) {
                 response.body()?.let { emit(it) }
             }

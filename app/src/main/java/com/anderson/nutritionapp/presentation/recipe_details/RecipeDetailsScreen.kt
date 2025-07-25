@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -84,17 +86,39 @@ fun RecipeDetailsScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                     }
 
-                    Text(
-                        text = recipe.recipe_name,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = recipe.recipe_name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1f)
+                        )
+                        recipe.rating?.let { rating ->
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = "Rating",
+                                tint = Color(0xFFFFC107), // Amber color for star
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Text(
+                                text = rating.toString(),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFFFC107),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(12.dp))
 
                     // Tags row
-                    Row(
+                    FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     ) {
                         recipe.number_of_servings?.let {
@@ -115,13 +139,6 @@ fun RecipeDetailsScreen(
                             AssistChip(onClick = {}, label = { Text("Cook: $it min") },
                                 colors = AssistChipDefaults.assistChipColors(
                                     containerColor =  Color(0xFFFFF3E0),
-                                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                ), border = null )
-                        }
-                        recipe.rating?.let {
-                            AssistChip(onClick = {}, label = { Text("Rating: $it") },
-                                colors = AssistChipDefaults.assistChipColors(
-                                    containerColor = Color(0xFFFCE4EC),
                                     labelColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 ), border = null )
                         }

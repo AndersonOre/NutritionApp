@@ -96,15 +96,20 @@ fun NutritionNavigator() {
                 val viewModel: HomeViewModel = hiltViewModel()
                 val categories = viewModel.food_categories.collectAsState(initial = emptyList())
                 val recipeTypes = viewModel.recipeTypes.collectAsState(initial = emptyList())
+                val randomRecipes = viewModel.randomRecipes.collectAsState(initial = emptyList())
                 LogScreenView("HomeScreen")
                 HomeScreen(
                     categories = categories.value,
                     recipes = recipeTypes.value,
+                    randomRecipes = randomRecipes.value,
                     onCategoryClick = { category ->
                         navController.navigate("${Route.FoodSearchScreen}/${category.name}")
                     },
                     onRecipeClick = { recipeType ->
                         navController.navigate("RecipeTypeScreen/$recipeType")
+                    },
+                    onRandomRecipeClick = { recipeId ->
+                        navController.navigate("${Route.RecipeDetailsScreen}/$recipeId")
                     },
                     authViewModel = hiltViewModel<AuthViewModel>(),
                 )

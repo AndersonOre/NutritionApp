@@ -43,9 +43,11 @@ interface NutritionApi {
 
     @GET("recipes/search/v3")
     suspend fun searchRecipes(
-        @Query("recipe_types") recipeType: String,
+        @Query("recipe_types") recipeType: String = "",
         @Query("max_results") maxResults: Int = 20,
-        @Query("format") format: String = "json"
+        @Query("search_expression") searchExpression: String = "",
+        @Query("format") format: String = "json",
+        @Query("must_have_images") mustHaveImages: Boolean = true,
     ): Response<RecipeSearchResponseModel>
 
     @GET("recipe/v2")

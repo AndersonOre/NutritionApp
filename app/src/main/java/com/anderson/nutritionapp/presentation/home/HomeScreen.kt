@@ -1,5 +1,6 @@
 package com.anderson.nutritionapp.presentation.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,11 +31,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import com.anderson.nutritionapp.data.remote.dto.RecipeModel
+import com.anderson.nutritionapp.data.remote.dto.RecipesList
 import com.anderson.nutritionapp.domain.model.FoodCategoryModel
 import com.anderson.nutritionapp.presentation.user_auth.AuthViewModel
 
@@ -42,9 +47,11 @@ import com.anderson.nutritionapp.presentation.user_auth.AuthViewModel
 fun HomeScreen(
     categories: List<FoodCategoryModel>,
     recipes: List<String>,
+    randomRecipes: List<RecipesList>,
     onCategoryClick: (FoodCategoryModel) -> Unit,
     onRecipeClick: (String) -> Unit,
     authViewModel: AuthViewModel,
+    onRandomRecipeClick: (recipeId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -91,6 +98,23 @@ fun HomeScreen(
         ) {
             items(recipes) { recipe ->
                 RecipeCard(recipe, onClick = { onRecipeClick(recipe) })
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Recipes you might like",
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold, fontSize = 24.sp
+            ),
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            if (randomRecipes.isNotEmpty()) {
+                items(randomRecipes[0].recipe) { recipe ->
+                    RandomRecipeCard(recipe, onClick = { onRandomRecipeClick(recipe.recipe_id) })
+                }
             }
         }
     }
@@ -186,6 +210,45 @@ fun RecipeCard(
             Text(
                 text = recipe,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+@Composable
+fun RandomRecipeCard(
+    recipe: RecipeModel,
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        modifier = Modifier
+            .width(160.dp)
+            .height(200.dp)
+            .clickable { onClick() }
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(recipe.recipe_image),
+                contentDescription = recipe.recipe_name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(RoundedCornerShape(24.dp))
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp),
+                text = recipe.recipe_name,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.primary
             )
         }

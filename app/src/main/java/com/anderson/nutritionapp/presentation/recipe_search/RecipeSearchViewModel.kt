@@ -20,7 +20,7 @@ class RecipeSearchViewModel @Inject constructor(
 
     fun searchRecipes(recipeType: String) {
         viewModelScope.launch {
-            nutritionUseCases.searchRecipes(recipeType).collect { result ->
+            nutritionUseCases.searchRecipes(recipeType,15,"").collect { result ->
                 _recipes.value = result
             }
         }

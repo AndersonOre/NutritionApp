@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anderson.nutritionapp.data.remote.dto.FoodSearchResponseModel
+import com.anderson.nutritionapp.data.remote.dto.RecipeModel
+import com.anderson.nutritionapp.data.remote.dto.RecipesList
 import com.anderson.nutritionapp.domain.usecase.nutrition.NutritionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +35,8 @@ class HomeViewModel @Inject constructor(
                 _recipeTypes.value = types
             }
         }
+
+        fetchRandomRecipes();
     }
 
     private val _foodSearchResults = MutableStateFlow<FoodSearchResponseModel?>(null)
@@ -44,6 +48,17 @@ class HomeViewModel @Inject constructor(
                 .collect { result ->
                     _foodSearchResults.value = result
                 }
+        }
+    }
+
+    private val _randomRecipes = MutableStateFlow<List<RecipesList>>(emptyList())
+    val randomRecipes: StateFlow<List<RecipesList>> = _randomRecipes
+
+    fun fetchRandomRecipes() {
+        viewModelScope.launch {
+            nutritionUseCases.searchRecipes("", 10,"pasta").collect { response ->
+                _randomRecipes.value = listOf(response.recipes)
+            }
         }
     }
 
