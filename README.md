@@ -31,27 +31,69 @@
 
 ## 📸 Capturas de pantalla
 
-| Pantalla | Descripción |
-|----------|-------------|
-| Onboarding 1 | Introducción a la app |
-| Onboarding 2 | Beneficios principales |
-| Onboarding 3 | Empecé a usar |
-| Home | Vista principal con recetas y alimentos |
-| Favorites | Lista de favoritos guardados |
-| Login / Register | Pantallas de autenticación |
-| Food List | Buscar alimentos para calorías |
-| Food Details | Información detallada del alimento |
-| Recipe List / Details | Recetas disponibles y su información |
-
-```markdown
-![Onboarding 1](images/onboarding_screen_1.png)  
-![Onboarding 2](images/onboarding_screen_2.png)  
-![Onboarding 3](images/onboarding_screen_3.png)  
-![Home](images/home_screen.png)  
-![Favorites](images/favorites_screen.png)  
-![Login](images/login_screen.png)  
-![Register](images/register_screen.png)  
-![Food List](images/food_list_screen.png)  
-![Food Details](images/food_details_screen.png)  
-![Recipe List](images/recipe_list_screen.png)  
-![Recipe Details](images/recipe_details_screen.png)  
+<table>
+  <tr>
+    <td align="center">
+      <strong>Onboarding 1</strong><br/>
+      <img src="images/onboarding_screen_1.png" width="200"/><br/>
+      Introducción a la app
+    </td>
+    <td align="center">
+      <strong>Onboarding 2</strong><br/>
+      <img src="images/onboarding_screen_2.png" width="200"/><br/>
+      Beneficios principales
+    </td>
+    <td align="center">
+      <strong>Onboarding 3</strong><br/>
+      <img src="images/onboarding_screen_3.png" width="200"/><br/>
+      Comienza a explorar
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Home</strong><br/>
+      <img src="images/home_screen.png" width="200"/><br/>
+      Vista principal de recetas
+    </td>
+    <td align="center">
+      <strong>Favoritos</strong><br/>
+      <img src="images/favorites_screen.png" width="200"/><br/>
+      Recetas y alimentos guardados
+    </td>
+    <td align="center">
+      <strong>Inicio de sesión</strong><br/>
+      <img src="images/login_screen.png" width="200"/><br/>
+      Inicio de sesión con Firebase
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Registro</strong><br/>
+      <img src="images/register_screen.png" width="200"/><br/>
+      Crear una nueva cuenta
+    </td>
+    <td align="center">
+      <strong>Lista de Alimentos</strong><br/>
+      <img src="images/food_list_screen.png" width="200"/><br/>
+      Buscar alimentos y ver calorías
+    </td>
+    <td align="center">
+      <strong>Detalles de Alimento</strong><br/>
+      <img src="images/food_details_screen.png" width="200"/><br/>
+      Información nutricional completa
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Lista de Recetas</strong><br/>
+      <img src="images/recipe_list_screen.png" width="200"/><br/>
+      Explorar recetas saludables
+    </td>
+    <td align="center">
+      <strong>Detalles de Receta</strong><br/>
+      <img src="images/recipe_details_screen.png" width="200"/><br/>
+      Ingredientes e instrucciones
+    </td>
+    <td></td>
+  </tr>
+</table>
