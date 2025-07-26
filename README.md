@@ -22,10 +22,10 @@
 - **Jetpack Compose**: UI declarativa moderna para pantallas y listas.
 - **Room**: base de datos local para favoritos y almacenamiento offline.
 - **Firebase Authentication**: registro e inicio de sesión.
-- **Firebase Analytics**: La app registra eventos personalizados para identificar las recetas más buscadas, los alimentos más consultados y las pantallas más visitadas.
+- **Firebase Analytics**: para registrar eventos personalizados e identificar las recetas más buscadas, los alimentos más consultados y las pantallas más visitadas.
 - **Hilt**: inyección de dependencias para ViewModels, repositorios y data sources.
 - **Kotlin Coroutines + Flow**: para operaciones asíncronas y reactividad.
-- **Retrofit**: para obtener información de una API externa nutricional y recetas.
+- **Retrofit**: para obtener información de API externa nutricional [FatSecretAPI](https://platform.fatsecret.com/)
 
 ---
 
